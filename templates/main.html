@@ -1,0 +1,67 @@
+{% extends 'base/base.html' %}
+
+
+{% block content %}
+<main class="page-wrapper px-3">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+      <h1 class="h2">Anasayfa</h1>
+      <div class="btn-toolbar mb-2 mb-md-0">
+      </div>
+    </div>
+    {% if messages %}
+    {% for message in messages  %}
+    <div class="alert alert-danger" role="alert">
+      {{message}}
+    </div>
+    {% endfor %}
+    {% endif %}
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <a href="{% url 'eksikler' %}" class="btn btn-danger text-white">Özlük Eksiği Olan Personeller</a>
+      <a href="{% url 'bordrolar' %}" class="btn btn-warning text-white">Bordrosu Gelmemiş Olan Personeller</a>
+    </div>
+  <br>
+    <section class="">
+      <div class="container">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col">
+            <div class="card rounded-3">
+              <div class="card-body p-4">
+    
+                <p class="mb-2"><span class="h2 me-2">Yapılacaklar</span>     
+                <ul class="list-group rounded-0">
+                  {% for todo in todos %}
+                  {% if todo.ok %}
+                  <li class="list-group-item border-0 d-flex align-items-center ps-0">
+                    <a href="{% url 'todo_sil' todo_pk=todo.pk %}" class="btn btn-danger me-2 text-white"><i class="fas fa-trash-alt"></i></a>
+                    <s>{{todo.aciklama}}</s>
+                  </li>
+                  {% else %}
+                  <li class="list-group-item border-0 d-flex align-items-center ps-0">
+                    <a href="{% url 'todo_degis' todo_pk=todo.pk %}" class="btn btn-success me-2 text-white"><i class="fas fa-check-square"></i></a>
+                    {{todo.aciklama}}
+                  </li>
+                  {% endif %}
+                  {% endfor %}
+                </ul>
+                <form method="POST">
+                  {% csrf_token %}
+                <div class="divider d-flex align-items-center my-4">
+                  {{form.aciklama}}
+                <input type="submit" value="Ekle" class="btn btn-success text-white">
+                </div>
+              </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    
+          
+        
+      
+    
+    
+</main>
+{% endblock%}

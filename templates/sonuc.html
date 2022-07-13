@@ -1,0 +1,38 @@
+{% extends 'base/base.html' %} 
+{% block content %}
+<main class="page-wrapper px-3">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1>Arama Sonuçları</h1>
+      </div>
+      <hr>
+      
+              <table class="table table-sm table-bordered bg-light">
+                <thead>
+                <tr>
+                  <th scope="col">Mükellefi</th>
+                  <th scope="col">İsim</th>
+                  <th scope="col">T.C</th>
+                  <th scope="col">Meslek</th>
+                  <th scope="col">İşe Giriş</th>
+                  <th scope="col">İşten Çıkış</th>
+                  <th scope="col">Evraklar</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for item in items  %}
+                <tr>                   
+                  <td>{{item.mukellef.isim}}</td>
+                  <th scope="row"> <a href="{% url 'personel' personel_pk=item.pk %}">{{item.isim}} <a/></th>
+                  <td>{{item.tc}}</td>
+                  <td>{{item.meslek}}</td>
+                  <td>{{item.ise_giris}}</td>
+                  <td>Devam Ediyor</td>
+                  <td>Tamamlandı</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+              </table>              
+              
+    </main>
+
+{% endblock content %}

@@ -1,0 +1,26 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<main class="page-wrapper px-3">
+    <div class="container-fluid">
+        <!-- ============================================================== -->
+        <!-- Start Page Content -->
+        <!-- ============================================================== -->
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card">
+              <form class="form-horizontal" method="POST">
+                {% csrf_token %}
+                {{form.as_p}}                 
+                </div>
+                <div class="border-top">
+                  <div class="card-body">
+                    <input type="submit" value="Ekle" class="btn btn-primary"/>
+                  </div>
+                </div>
+              </form>
+            </div>
+</main>
+
+{% endblock content %}

@@ -1,0 +1,68 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<main class="page-wrapper px-3">
+    <div class="container-fluid">
+        <!-- ============================================================== -->
+        <!-- Start Page Content -->
+        <!-- ============================================================== -->
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card">
+              <form class="form-horizontal" method="POST">
+                {% csrf_token %}
+                <div class="card-body">
+                  <h4 class="card-title">Mükellef Ekle</h4>
+                  <div class="form-group row">
+                    <label
+                      for="fname"
+                      class="col-sm-3 text-end control-label col-form-label"
+                      >İsim</label
+                    >
+                    <div class="col-sm-9">
+                        {{form.isim}}
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label
+                      for="lname"
+                      class="col-sm-3 text-end control-label col-form-label"
+                      >Telefon</label
+                    >
+                    <div class="col-sm-9">
+                        {{form.tel}}
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label
+                      for="lname"
+                      class="col-sm-3 text-end control-label col-form-label"
+                      >Adres</label
+                    >
+                    <div class="col-sm-9">
+                        {{form.adres}}
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label
+                      for="email1"
+                      class="col-sm-3 text-end control-label col-form-label"
+                      >E-Mail</label
+                    >
+                    <div class="col-sm-9">
+                        {{form.mail}}
+                    </div>
+                  </div>
+                  
+                </div>
+                <div class="border-top">
+                  <div class="card-body">
+                    <input type="submit" value="Ekle" class="btn btn-primary"/>
+                  </div>
+                </div>
+              </form>
+            </div>
+</main>
+
+{% endblock content %}

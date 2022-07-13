@@ -1,0 +1,60 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<main class="page-wrapper px-3">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1>{{title}}</h1>
+        <div class="nav-item search-box">
+          <a
+            class="nav-link waves-effect waves-dark"
+            href="javascript:void(0)"
+            ><i class="mdi mdi-magnify fs-4"></i
+          ></a>
+          <form class="app-search position-absolute" method="POST">
+            {% csrf_token %}
+            {{form.kelime}}
+            <a class="srh-btn"><i class="mdi mdi-window-close"></i></a>
+          </form>
+        </div>
+        {% if title != "Eksiği Olan Personeller" %}
+        <div class="btn-toolbar mb-2 mb-md-0">
+          <a href="{% url 'eksikler' %}" class="btn btn-outline-danger">Eksiği Olan Personeller</a>
+        </div>
+        {% endif %}
+      </div>
+      <hr>
+      {% for mukellef in mukellefler  %}
+              <h4> {{mukellef.isim}}</h4>
+              <table class="table table-sm table-bordered bg-light">
+                <thead>
+                <tr>
+                  <th scope="col">Şube</th>
+                  <th scope="col">İsim</th>
+                  <th scope="col">T.C</th>
+                  <th scope="col">Meslek</th>
+                  <th scope="col">İşe Giriş</th>
+                  <th scope="col">İşten Çıkış</th>
+                  <th scope="col">Evraklar</th>
+                </tr>
+                </thead>
+                <tbody>
+                  {% for item in items  %}
+                  {% if item.mukellef.isim == mukellef.isim %}
+                <tr>
+                  <td>{{item.sube.isim}}</td>
+                  <th scope="row"> <a href="{% url 'personel' personel_pk=item.pk %}">{{item.isim}} <a/></th>
+                  <td>{{item.tc}}</td>
+                  <td>{{item.meslek}}</td>
+                  <td>{{item.ise_giris}}</td>
+                  <td>Devam Ediyor</td>
+                  <td>{% if item.tamamlandi %}Tamamlandı {% else %}<span class="bg-danger text-white">Eksik{% endif %}</td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+                </tbody>
+              </table>              
+              {% endfor %}
+    </main>
+
+{% endblock content %}

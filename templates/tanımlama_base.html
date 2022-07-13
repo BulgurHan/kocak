@@ -1,0 +1,234 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<main class="page-wrapper px-3">
+    <div class="page-breadcrumb">
+        <div class="row">
+          <div class="col-12 d-flex no-block align-items-center">
+            <h4 class="page-title">{{title}}leri Düzenle</h4>
+            <div class="ms-auto text-end">
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="{% url 'main' %}">Anasayfa</a></li>
+                  <li class="breadcrumb-item"><a href="{% url 'tanimlamalar' %}">Tanımlamalar</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">
+                    {{title}}leri Düzenle
+                  </li>
+                </ol>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ============================================================== -->
+      <!-- End Bread crumb and right sidebar toggle -->
+      <!-- ============================================================== -->
+      <!-- ============================================================== -->
+      <!-- Container fluid  -->
+      <!-- ============================================================== -->
+      <div class="container-fluid">
+        <!-- ============================================================== -->
+        <!-- Sales Cards  -->
+        <!-- ============================================================== -->
+        <div class="row">
+          <!-- Column -->
+          <div class="col-3">
+            <div class="card card-hover">
+              {% if title == "Mükellef" %}
+              <a href="{% url 'mukellef_ekle' %}">
+              {% elif title == "Şube" %}
+              <button class="border" data-bs-toggle="modal" data-bs-target="#exampleModal"> 
+              {% else %} 
+              <a href="{% url 'personel_ekle' %}">
+              {% endif %}           
+              <div class="box bg-cyan text-center">
+                <h1 class="font-light text-white">
+                  <i class="mdi mdi-view-dashboard"></i>
+                </h1>
+                <h6 class="text-white">Tekli {{title}} Ekle</h6>
+              </div>
+            </div>
+          </button>
+            
+          </a>
+          
+          </div>
+          <!-- Column -->
+          <div class="col-3">
+            <div class="card card-hover">
+              {% if title == "Mükellef" %}
+              <a href="{% url 'toplu_mukellef' %}">
+                {% elif title == "Şube" %}
+                <a href="{% url 'toplu_sube' %}">
+                {% else %}
+                <a href="{% url 'toplu_personel' %}">
+                {% endif %}
+              <div class="box bg-success text-center">
+                <h1 class="font-light text-white">
+                  <i class="mdi mdi-chart-areaspline"></i>
+                </h1>
+                <h6 class="text-white">Excel ile Toplu {{title}} Ekle</h6>
+              </div>
+            </a>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h1>{{title}}ler</h1>
+          </div>
+          {% if title == "Mükellef" %}
+          <table class="table table-sm table-bordered bg-light">
+              <thead>
+              <tr>
+                <th scope="col">İsim</th>
+                <th scope="col">Adres</th>
+                <th scope="col">Telefon</th>
+                <th scope="col">Mail</th>
+              </tr>
+              </thead>
+              <tbody>
+                {% for item in items %}
+              <tr>                
+                <td scope="row">{{item.isim}}</td>
+                <td>{{item.adres}}</td>
+                <td>{{item.tel}}</td>
+                <td>{{item.mail}}</td>
+              </tr>
+              {% endfor %}
+              <tr>
+                <th colspan="3">Toplam</th>
+                <td>{{toplam}}</td>
+              </tbody>
+            </table>
+              <hr>
+              {% elif title == "Şube" %}
+              <table class="table table-sm table-bordered bg-light">
+                <thead>
+                <tr>
+                  <th scope="col">Mükellef</th>
+                  <th scope="col">Şube</th>
+                </tr>
+                </thead>
+                <tbody>
+                  {% for item in items %}
+                <tr>                
+                  <td scope="row">{{item.mukellef.isim}}</td>
+                  <td>{{item.isim}}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                  <th >Toplam</th>
+                  <td>{{toplam}}</td>
+                </tbody>
+              </table>
+                <hr>
+              {% else %}
+              <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <div class="btn-toolbar mb-2 mb-md-0">
+                  <button type="button" class="btn btn-outline-danger">Eksiği Olan Personeller</button>
+                </div>
+              </div>
+              {% if messages %}
+              {% for message in messages  %}
+              <div class="alert alert-danger" role="alert">
+                {{message}}
+              </div>
+              {% endfor %}
+              {% endif %}
+              <hr>
+              {% for mukellef in mukellefler  %}
+              <h4> {{mukellef.isim}}</h4>
+              <table class="table table-sm table-bordered bg-light">
+                <thead>
+                <tr>
+                  <th scope="col">Şube</th>
+                  <th scope="col">İsim</th>
+                  <th scope="col">T.C</th>
+                  <th scope="col">Meslek</th>
+                  <th scope="col">İşe Giriş</th>
+                  <th scope="col">İşten Çıkış</th>
+                  <th scope="col">Evraklar</th>
+                </tr>
+                </thead>
+                <tbody>
+                  {% for item in items  %}
+                  {% if item.mukellef.isim == mukellef.isim %}
+                <tr>
+                  <td>{{item.sube.isim}}</td>
+                  <th scope="row"> <a href="{% url 'personel' personel_pk=item.pk %}">{{item.isim}} <a/></th>
+                  <td>{{item.tc}}</td>
+                  <td>{{item.meslek}}</td>
+                  <td>{{item.ise_giris}}</td>
+                  <td>Devam Ediyor</td>
+                  <td>Tamamlandı</td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+                </tbody>
+              </table>              
+              {% endfor %}
+                <hr>              
+              {% endif %}
+              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog ">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div
+                        class="
+                          auth-wrapper
+                          d-flex
+                          no-block
+                          justify-content-center
+                          align-items-center
+                          
+                        "
+                      >
+                            </div>
+                            <!-- Form -->
+                            <form
+                              class="form-horizontal mt-3"
+                              id="loginform"
+                              method = 'POST'
+                            >
+                            {% csrf_token %}
+                              <div class="row pb-4">
+                                <div class="col-12">
+                                  <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+              
+                                    </div>
+                                        {{form.as_p}}
+                                  </div>
+                                  
+                                </div>
+                              </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                      <input type="submit" value="Ekle" class="btn btn-primary">
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              
+              <script>
+                var myModal = document.getElementById('myModal')
+                var myInput = document.getElementById('myInput')
+              
+                myModal.addEventListener('shown.bs.modal', function () {
+                myInput.focus()
+                })
+              
+              </script>
+              
+ 
+
+</main>
+
+
+{% endblock content %}

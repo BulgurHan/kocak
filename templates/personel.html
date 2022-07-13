@@ -1,0 +1,345 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+<main class="page-wrapper px-3">
+<div class="card">
+    <div class="card-body ">
+      <h2 class="card-title">Personel Bilgileri</h2>
+      Mükellefi : {{personel.mukellef.isim}}
+      <br>  
+      Şubesi : {{personel.sube.isim}}
+      <br>
+      İsim Soyisim : {{personel.isim}}
+      <br>
+      T.C :  {{personel.tc}}
+      <br>
+      Adres : {{personel.adres}}
+      <br>
+      Meslek : {{personel.meslek}}
+      <br>
+      İşe Giriş : {% if personel.ise_giris == None %} Girilmedi {% else %} {{personel.ise_giris}} {% endif %}  
+      <br>
+      İşten Çıkış : {% if personel.isten_cikis == None %} Devam Ediyor {% else %} {{personel.isten_cikis}} {% endif %}
+      <br>
+    </div>
+    <hr>
+    <h3 class="px-3"> Evraklar <button class="btn btn-success text-white" data-bs-toggle="modal" data-bs-target="#exampleModal"> Düzenle </h3>
+    <table class="table" >
+      <thead>
+        <tr>
+          <th>İş Sözleşmesi</th>
+          <th >Görevlendirme Belgesi</th>
+          <th>Fazla Mesai Onay</th>
+          <th>Geçiçi Görev Yazısı</th>
+          <th>Kimlik Fotokopisi</th>
+          <th>Adli Sicil Kaydı</th>
+          <th>Yerleşim Yeri Belgesi</th>
+          <th>Mezuniyet Belgesi</th>
+          <th>Sertifikalar</th>
+          <th>Hijyen Belgesi</th>
+          <th>Sağlık Raporu</th>
+          <th>Vesikalık</th>
+          <th>İstifa</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            {% if ozluk.is_sozlesmesi %}
+            <i class="fas fa-check"></i>
+            {% else %}
+            <i class="fas fa-exclamation-circle"></i>
+            {% endif %}
+          </td>
+          <td>
+            {% if ozluk.gorevlendirme_belgesi %}
+            <i class="fas fa-check"></i>
+            {% else %}
+            <i class="fas fa-exclamation-circle"></i>
+            {% endif %}
+          </td>
+          <td>
+            {% if ozluk.fazla_messai_onay %}
+            <i class="fas fa-check"></i>
+            {% else %}
+            <i class="fas fa-exclamation-circle"></i>
+            {% endif %}
+          </td>
+          <td>
+            {% if ozluk.gecici_gorev_yazisi %}
+            <i class="fas fa-check"></i>
+            {% else %}
+            <i class="fas fa-exclamation-circle"></i>
+            {% endif %}
+          </td>
+          <td>
+            {% if ozluk.kimlik_fotokopisi %}
+            <i class="fas fa-check"></i>
+            {% else %}
+            <i class="fas fa-exclamation-circle"></i>
+            {% endif %}
+          </td>
+          <td>
+            {% if ozluk.adli_sicil_kaydi %}
+            <i class="fas fa-check"></i>
+            {% else %}
+            <i class="fas fa-exclamation-circle"></i>
+            {% endif %}
+          </td>
+          <td>
+            {% if ozluk.yerlesim_yeri_belgesi %}
+            <i class="fas fa-check"></i>
+            {% else %}
+            <i class="fas fa-exclamation-circle"></i>
+            {% endif %}
+          </td>
+          <td>
+            {% if ozluk.mezuniyet_belgesi %}
+            <i class="fas fa-check"></i>
+            {% else %}
+            <i class="fas fa-exclamation-circle"></i>
+            {% endif %}
+          </td>
+          <td>
+            {% if ozluk.sertifikalar %}
+            <i class="fas fa-check"></i>
+            {% else %}
+            <i class="fas fa-exclamation-circle"></i>
+            {% endif %}
+          </td>
+          <td>
+            {% if ozluk.hijyen_belgesi %}
+            <i class="fas fa-check"></i>
+            {% else %}
+            <i class="fas fa-exclamation-circle"></i>
+            {% endif %}
+          </td>
+          <td>
+            {% if ozluk.saglik_raporu %}
+            <i class="fas fa-check"></i>
+            {% else %}
+            <i class="fas fa-exclamation-circle"></i>
+            {% endif %}
+          </td>
+          <td>
+            {% if ozluk.veskikalık %}
+            <i class="fas fa-check"></i>
+            {% else %}
+            <i class="fas fa-exclamation-circle"></i>
+            {% endif %}
+          </td>
+          <td>
+            {% if ozluk.istifa %}
+            <i class="fas fa-check"></i>
+            {% else %}
+            <i class="fas fa-exclamation-circle"></i>
+            {% endif %}
+          </td>
+        </tr>      
+      </tbody>
+    </table>
+    <br>
+    <hr>
+    <h3 class="px-3"> Bordrolar <a href="{% url 'bordro_ekle' personel_pk=personel.pk %}" class="btn btn-success text-white">Ekle</a> </h3>
+    <table class="table" >
+      <thead>
+        <tr>
+          <th>İsim</th>
+          <th>Tarih</th>
+          <th>Geldi</th>
+          <th>Sil</th>
+          <th>Geldi Mi?</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for bordro in bordrolar  %}
+        <tr>
+          <td> {{bordro.personel.isim}} </td>
+          <td> {{bordro.tarih}} </td>         
+          <td>{% if bordro.geldi == False %} <a href="{% url 'bordro_geldi' bordro_pk=bordro.pk personel_pk=personel.pk %}" class="btn btn-success text-white"> Geldi {% endif %}</a> </td>
+          <td> <a href="{% url 'bordro_sil' bordro_pk=bordro.pk personel_pk=personel.pk %}" class="btn btn-danger text-white"> Sil </a></td>
+          <td> {% if bordro.geldi %} Evet {% else %} Hayır {% endif %} </td>
+        </tr> 
+        {% endfor %}     
+      </tbody>
+    </table>
+    <br>
+    <hr>
+    <h3 class="px-3"> Tutanaklar <a href="{% url 'tutanak_ekle' personel_pk=personel.pk %}" class="btn btn-success text-white">Ekle</a> </h3>
+    <table class="table" >
+      <thead>
+        <tr>
+          <th>İsim</th>
+          <th>Başlık</th>
+          <th>Tarih</th>
+          <th>Sil</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for tutanak in  tutanaklar %}
+        <tr>         
+          <td> {{tutanak.personel.isim}} </td>
+          <td> {{tutanak.baslik}} </td>
+          <td> {{tutanak.tarih}} </td>
+          <td> <a href="{% url 'tutanak_sil' tutanak_pk=tutanak.pk personel_pk=personel.pk %}" class="btn btn-danger text-white"> Sil </a></td>          
+        </tr>
+        {% endfor %}      
+      </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close bg-danger" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <div
+          class="
+            auth-wrapper
+            d-flex
+            no-block
+            justify-content-center
+            align-items-center
+            
+          "
+        >
+              </div>
+              <!-- Form -->
+              <form method="POST">
+                {% csrf_token %}
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Özlük Evrakları</h5>                                 
+                  <div class="form-group row">
+                    <div class="col-md-9">
+                      <div class="form-check mr-sm-2">
+                        {{form.is_sozlesmesi}}
+                        <label class="form-check-label mb-0" for="customControlAutosizing1">İş Sözleşmesi</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-9">
+                      <div class="form-check mr-sm-2">
+                        {{form.gorevlendirme_belgesi}}
+                        <label class="form-check-label mb-0" for="customControlAutosizing1">Görevlendirme Belgesi</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-9">
+                      <div class="form-check mr-sm-2">
+                        {{form.fazla_messai_onay}}
+                        <label class="form-check-label mb-0" for="customControlAutosizing1">Fazla Mesai Onay</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-9">
+                      <div class="form-check mr-sm-2">
+                        {{form.gecici_gorev_yazisi}}
+                        <label class="form-check-label mb-0" for="customControlAutosizing1">Geçici Görev Yazısı</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-9">
+                      <div class="form-check mr-sm-2">
+                        {{form.kimlik_fotokopisi}}
+                        <label class="form-check-label mb-0" for="customControlAutosizing1">Kimlik Fotokopisi</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-9">
+                      <div class="form-check mr-sm-2">
+                        {{form.adli_sicil_kaydi}}
+                        <label class="form-check-label mb-0" for="customControlAutosizing1">Adli Sicil Kaydı</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-9">
+                      <div class="form-check mr-sm-2">
+                        {{form.mezuniyet_belgesi}}
+                        <label class="form-check-label mb-0" for="customControlAutosizing1">Mezuniyet Belgesi</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-9">
+                      <div class="form-check mr-sm-2">
+                        {{form.yerlesim_yeri_belgesi}}
+                        <label class="form-check-label mb-0" for="customControlAutosizing1">Yerleşim Yeri Belgesi</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-9">
+                      <div class="form-check mr-sm-2">
+                        {{form.hijyen_belgesi}}
+                        <label class="form-check-label mb-0" for="customControlAutosizing1">Hijyen Belgesi</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-9">
+                      <div class="form-check mr-sm-2">
+                        {{form.sertifikalar}}
+                        <label class="form-check-label mb-0" for="customControlAutosizing1">Sertifikalar</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-9">
+                      <div class="form-check mr-sm-2">
+                        {{form.saglik_raporu}}
+                        <label class="form-check-label mb-0" for="customControlAutosizing1">Sağlık Raporu</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-9">
+                      <div class="form-check mr-sm-2">
+                        {{form.veskikalık}}
+                        <label class="form-check-label mb-0" for="customControlAutosizing1">Vesikalık</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <div class="col-md-9">
+                      <div class="form-check mr-sm-2">
+                        {{form.istifa}}
+                        <label class="form-check-label mb-0" for="customControlAutosizing1">İstifa</label>
+                      </div>
+                    </div>
+                  </div>
+                <div class="border-top">
+                </div>
+              </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+        <input type="submit" value="Kaydet" class="btn btn-success text-white">
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+
+
+<script>
+  var myModal = document.getElementById('myModal')
+  var myInput = document.getElementById('myInput')
+
+  myModal.addEventListener('shown.bs.modal', function () {
+  myInput.focus()
+  })
+
+</script>
+</main>
+
+
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<main class="page-wrapper px-3">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    </div>
+    <h2>Şubeler</h2>
+    <hr>
+    {% for mukellef in mukellefler  %}
+    <table class="table table-sm table-bordered bg-light">
+        <thead>
+        <tr>
+          <th scope="col"><span class="h4">{{mukellef.isim}}<span/></th>
+        </tr>
+        </thead>
+        <tbody>
+          {% for sube in subeler  %}
+          {% if sube.mukellef.isim == mukellef.isim %}
+        <tr>
+          <td scope="row">{{sube.isim}}</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+        {% endfor %}
+        </tbody>
+      </table>
+        <hr>
+    </main>
+
+{% endblock content %}
